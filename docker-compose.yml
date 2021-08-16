@@ -1,0 +1,23 @@
+version: '2'
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    env_file: .development.env
+    volumes:
+      - ./dist:/app/dist
+      - ./src:/app/src
+      - ./src/migrations:/app/src/migrations
+    depends_on:
+      - postgres-node-test
+    links:
+      - postgres-node-test
+    command: [ "yarn", "start:dev" ]
+
+  postgres-node-test:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: abc123
